@@ -172,7 +172,7 @@ images: ['images/michelin-oss.jpg']
                         <p style="text-align:center" class="p-white-regular">
                 <span>
                   Explore our latest technological advancements and collaborative efforts driving Michelin's commitment to excellence.<br/>
-                  Discover innovative solutions and security practices on out GitHub repositories, and stay updated on tech trends and developments through our IT blog.<br/>
+                  Discover innovative solutions and security practices on our GitHub repositories, and stay updated on tech trends and developments through our IT blog.<br/>
                 </span>
                         </p>
                     </div>
