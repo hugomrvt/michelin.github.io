@@ -206,11 +206,22 @@ All images live in `static/images/` and are referenced with absolute paths
 (`/images/...`). Files under `static/` are copied verbatim — Hugo does **not**
 process them.
 
-**Optimization (recommended, not yet applied):** a few assets are heavy
-(`couv.png` ~668 KB, `fond.png` ~320 KB, `oss-activities.png` ~272 KB). To shrink
-them, convert to **WebP/AVIF** and update the references, or move them into
-`assets/` and use [Hugo image processing](https://gohugo.io/content-management/image-processing/).
-Deferred to keep binary changes out of this change set (they need a visual review).
+**WebP optimization (applied).** The on‑page raster images are served as
+**WebP**, which cut their combined weight by **~70%** (≈1.7 MB → ≈0.5 MB; e.g.
+`couv` 667 KB → 155 KB, `fond` 317 KB → 36 KB). Conventions used:
+
+- Each image was encoded both lossy (`q82`) and lossless; the **smaller** result
+  wins, and WebP is only adopted when it actually beats the PNG (flat
+  illustrations such as `Team`/`code`/`picto` use lossless).
+- `favicon.png` (favicon compatibility) and `michelin-oss.jpg` (the Open Graph
+  share image, for social‑platform compatibility) are intentionally **left as‑is**.
+- SVGs (logos, icons) are vector and need no conversion.
+
+> Regenerating: the WebP files were produced with `sharp` (libvips). Browser
+> support for WebP is universal across evergreen browsers, so references point to
+> `.webp` directly rather than using `<picture>` fallbacks. For a future, more
+> Hugo‑idiomatic setup, move images into `assets/` and use
+> [Hugo image processing](https://gohugo.io/content-management/image-processing/).
 
 ## Deployment
 
@@ -243,8 +254,9 @@ The custom domain `opensource.michelin.io` is configured via `CNAME`.
 - **Fonts load from external CDNs** via `@font-face` in `vendor.css`
   (MichelinUnitTitling from Azure Blob, Noto Sans from Google Fonts). The CSP
   does not restrict fonts. `preconnect` hints are set for both hosts.
-- **Image weights.** See [Images](#images) — WebP/AVIF conversion is recommended
-  but deliberately deferred.
+- **Images are WebP.** See [Images](#images) — on‑page rasters are optimized;
+  `favicon.png` and the OG `michelin-oss.jpg` are kept in their original formats
+  on purpose.
 - **`unsafe` Markdown is required.** Content embeds raw HTML; disabling
   `markup.goldmark.renderer.unsafe` would break the pages.
 

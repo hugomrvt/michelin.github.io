@@ -14,7 +14,7 @@ images: ['images/michelin-oss.jpg']
             <div>
                 <p>We make software <span>&amp; we <img class="heart" src="/images/coeur.svg" alt="💖"/> IT.</span></p>
             </div>
-        </div><img src="/images/couv.png" alt="Michelin Open Source" style="width: 100%;height: 100%;">
+        </div><img src="/images/couv.webp" alt="Michelin Open Source" style="width: 100%;height: 100%;">
     </div>
 </section>
 <section id="Manifesto">
@@ -54,7 +54,7 @@ images: ['images/michelin-oss.jpg']
                     <div class="container rationale">
                         <div class="row-content-direction-row md-row-content-direction-row">
                             <div class="col-lg-2 col-sm-2 align-center align-content-center">
-                                <img src="/images/picto.png" alt="Picto code" />
+                                <img src="/images/picto.webp" alt="Picto code" />
                             </div>
                             <div class="col-lg-10 align-center content-direction-column">
                                 <h4 class="h4-white-regular align-center">TALENT ACQUISITION AND RETENTION</h4>
@@ -67,7 +67,7 @@ images: ['images/michelin-oss.jpg']
                     <div class="container rationale">
                         <div class="row-content-direction-row md-row-content-direction-row">
                             <div class="col-lg-2 col-sm-2 align-center align-content-center">
-                                <img src="/images/code.png" alt="Let's code"/>
+                                <img src="/images/code.webp" alt="Let's code"/>
                             </div>
                             <div class="col-lg-10 align-center content-direction-column">
                                 <h4 class="h4-white-regular align-center">ENGINEERING ECONOMICS</h4>
@@ -80,7 +80,7 @@ images: ['images/michelin-oss.jpg']
                     <div class="container rationale">
                         <div class="row-content-direction-row md-row-content-direction-row">
                             <div class="col-lg-2 col-sm-2 align-center align-content-center">
-                                <img src="/images/Team.png" alt="Team work" />
+                                <img src="/images/Team.webp" alt="Team work" />
                             </div>
                             <div class="col-lg-10 align-center content-direction-column">
                                 <h4 class="h4-white-regular align-center">SUSTAIN THE OPEN SOURCE COMMUNITY</h4>
@@ -117,17 +117,17 @@ images: ['images/michelin-oss.jpg']
     <ul class="ds-carousel__track" data-carousel-track>
         <li class="ds-carousel__item">
             <a class="ds-carousel__card" href="https://www.cncf.io/" target="_blank" rel="noopener">
-                <span class="ds-carousel__media" role="img" aria-label="Cloud Native Computing Foundation" style="background-image:url(/images/memberships/CNCF.png);"></span>
+                <span class="ds-carousel__media" role="img" aria-label="Cloud Native Computing Foundation" style="background-image:url(/images/memberships/CNCF.webp);"></span>
             </a>
         </li>
         <li class="ds-carousel__item">
             <a class="ds-carousel__card" href="https://www.linuxfoundation.org/" target="_blank" rel="noopener">
-                <span class="ds-carousel__media" role="img" aria-label="Linux Foundation" style="background-image:url(/images/memberships/Linux-Foundation-data.png);"></span>
+                <span class="ds-carousel__media" role="img" aria-label="Linux Foundation" style="background-image:url(/images/memberships/Linux-Foundation-data.webp);"></span>
             </a>
         </li>
         <li class="ds-carousel__item">
             <a class="ds-carousel__card" href="https://www.eclipse.org/" target="_blank" rel="noopener">
-                <span class="ds-carousel__media" role="img" aria-label="Eclipse Foundation" style="background-image:url(/images/memberships/Eclipse-Foundation.png);"></span>
+                <span class="ds-carousel__media" role="img" aria-label="Eclipse Foundation" style="background-image:url(/images/memberships/Eclipse-Foundation.webp);"></span>
             </a>
         </li>
     </ul>
@@ -157,21 +157,21 @@ images: ['images/michelin-oss.jpg']
     <ul class="ds-carousel__track" data-carousel-track>
         <li class="ds-carousel__item">
             <a class="ds-carousel__card" href="https://github.com/michelin/" target="_blank" rel="noopener">
-                <span class="ds-carousel__media" aria-hidden="true" style="background-image:url(/images/GitHub_Logo_White.png);"></span>
+                <span class="ds-carousel__media" aria-hidden="true" style="background-image:url(/images/GitHub_Logo_White.webp);"></span>
                 <h3 class="ds-carousel__title">GITHUB</h3>
                 <p class="ds-carousel__text">Dive into our repositories to explore the innovative solutions driving Michelin's commitment to excellence. Join us on this journey of technological advancement and collaboration on GitHub!</p>
             </a>
         </li>
         <li class="ds-carousel__item">
             <a class="ds-carousel__card" href="https://github.com/certmichelin" target="_blank" rel="noopener">
-                <span class="ds-carousel__media" aria-hidden="true" style="background-image:url(/images/michelin_cert_logo.png);"></span>
+                <span class="ds-carousel__media" aria-hidden="true" style="background-image:url(/images/michelin_cert_logo.webp);"></span>
                 <h3 class="ds-carousel__title">CERT's GITHUB</h3>
                 <p class="ds-carousel__text">Explore our security advisories, best practices, and tools designed to fortify defenses against emerging threats. Join us in our mission to safeguard Michelin's digital ecosystem and foster a culture of resilience.</p>
             </a>
         </li>
         <li class="ds-carousel__item">
             <a class="ds-carousel__card" href="https://blogit.michelin.io/" target="_blank" rel="noopener">
-                <span class="ds-carousel__media" aria-hidden="true" style="background-image:url(/images/blog.png);"></span>
+                <span class="ds-carousel__media" aria-hidden="true" style="background-image:url(/images/blog.webp);"></span>
                 <h3 class="ds-carousel__title">IT ENGINEERING BLOG</h3>
                 <p class="ds-carousel__text">From innovative solutions to behind-the-scenes glimpses of our projects, our blog is your go-to resource for staying updated on the latest tech trends and developments. Join us as we explore the intersection of technology and mobility, fueled by creativity and collaboration.</p>
             </a>
