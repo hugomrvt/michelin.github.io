@@ -19,24 +19,46 @@ breakpoints — while preserving Michelin's visual identity.
 
 ## Architecture
 
-Bundled by Hugo in `layouts/_default/baseof.html`:
+The design system is written in **SCSS** (`assets/scss/`) and compiled by Hugo
+extended (`css.Sass`, libsass). `layouts/_default/baseof.html` concatenates the
+legacy CSS with the compiled output, in this order:
 
 ```
-vendor.css  →  tokens.css  →  system.css
-(legacy)       (overrides &     (fluid type, components,
-               new tokens)       accessibility — wins last)
+vendor.css  +  scss/main.scss → CSS
+(legacy)        (design system — loaded last, so it wins)
 ```
 
-Because custom properties resolve at use‑time and `tokens.css` loads **after**
-`vendor.css`, redefining a token (e.g. `--spacing-ml`) instantly makes every
-existing rule that uses `var(--spacing-ml)` fluid — without editing the vendor
-rules.
+Because custom properties resolve at use‑time and the compiled `:root` lands
+**after** `vendor.css`, redefining a token (e.g. `--spacing-ml`) instantly makes
+every existing rule that uses `var(--spacing-ml)` fluid — without editing the
+vendor rules.
 
-| File | Responsibility |
-|------|----------------|
-| `assets/css/tokens.css` | All design tokens (colours, fonts, type scale, spacing, radii, shadows, motion, layout, z‑index). |
-| `assets/css/system.css` | Fluid typography applied to existing utilities, hero refinements, the carousel component, utilities & a11y. |
-| `assets/css/vendor.css` | Legacy compiled Michelin design system (vendored; edit directly, sparingly). |
+`main.scss` imports the partials in order:
+
+| Partial | Responsibility |
+|---------|----------------|
+| `_functions.scss` | `fluid($min, $max, $wmin, $wmax)` → a `clamp()` interpolating between two viewport widths (max = former desktop value). |
+| `_mixins.scss`    | `visually-hidden`, `focus-ring`, `surface-card`. |
+| `_tokens.scss`    | Sass maps for the type/spacing scales, emitted as `:root` custom properties (colours, fonts, fluid type, fluid spacing, radii, shadows, motion, layout, z‑index). |
+| `_typography.scss`| Fluid type applied to the existing heading utilities + the hero. |
+| `_carousel.scss`  | The swipeable `.ds-carousel` component. |
+| `_utilities.scss` | Accessibility helpers. |
+
+`assets/css/vendor.css` is the legacy compiled Michelin design system (vendored;
+edit directly and sparingly). It is intentionally kept out of the SCSS pipeline.
+
+> **Requires Hugo *extended*** — libsass is built into the extended edition. The
+> CI sets `extended: true`; locally, `hugo version` must report `+extended`.
+
+### Generating fluid values
+
+```scss
+// _functions.scss turns a min/max (rem) into a clamp() between two viewports:
+--fs-h2: #{fluid(1.375, 1.75)};   // → clamp(1.375rem, 1.077rem + 1.3vw, 1.75rem)
+```
+
+The `$type-scale` and `$space-scale` maps in `_tokens.scss` are looped with
+`@each` to emit every `--fs-*` / `--spacing-*` token, so the scales stay DRY.
 
 ## Tokens
 
@@ -141,7 +163,7 @@ and hides/disables the arrows based on scroll position.
 
 The legacy `.h2-mobile-white-bold`, `.h3-white-bold`, `.h4/5/6-*`,
 `.p-white-*` classes keep their families/colours/weights from `vendor.css`;
-`system.css` only swaps their `font-size` to the fluid scale.
+`_typography.scss` only swaps their `font-size` to the fluid scale.
 
 ### Accessibility helpers
 
@@ -151,9 +173,11 @@ animations and smooth scrolling.
 
 ## Extending the system
 
-- **New colour / size?** Add a token in `tokens.css`, then reference it.
-- **New component?** Add it to `system.css` with a `ds-` prefix and tokens; avoid
-  new hard‑coded breakpoints — reach for `clamp()` first.
-- **Touching the vendor file?** Prefer overriding in `system.css` (it loads last)
-  rather than editing `vendor.css`.
-- Verify locally with `hugo server` before opening a PR.
+- **New colour / size?** Add it to the relevant map/variable in `_tokens.scss`
+  (the `@each` loops emit the custom properties), then reference `var(--…)`.
+- **New component?** Add a partial (or a rule in an existing one), import it from
+  `main.scss`, prefix classes with `ds-`, and use tokens; avoid new hard‑coded
+  breakpoints — reach for `fluid()` / `clamp()` first.
+- **Touching the vendor file?** Prefer overriding in an SCSS partial (compiled
+  output loads last) rather than editing `vendor.css`.
+- Verify locally with `hugo server` (Hugo **extended**) before opening a PR.

@@ -1,0 +1,125 @@
+// =============================================================================
+//  Carousel component (.ds-carousel)
+// -----------------------------------------------------------------------------
+//  Native, CSP-safe swipeable slider: CSS scroll-snap provides touch swiping,
+//  carousel.js wires the prev/next buttons and pointer drag. No external library.
+// =============================================================================
+
+.ds-carousel {
+  position: relative;
+  padding-block: var(--spacing-ml);
+
+  &__track {
+    display: flex;
+    gap: var(--space-gap);
+    align-items: stretch;
+    justify-content: safe center;   // centre when it fits, scroll when it doesn't
+    max-width: var(--container-max);
+    margin-inline: auto;
+    padding: var(--spacing-sm) var(--spacing-l);
+    list-style: none;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;          // Firefox
+
+    &::-webkit-scrollbar { display: none; } // WebKit
+
+    &.is-dragging {                 // while click-dragging on desktop
+      cursor: grabbing;
+      scroll-snap-type: none;
+      scroll-behavior: auto;
+    }
+  }
+
+  &__item {
+    flex: 0 0 auto;
+    scroll-snap-align: center;
+    width: clamp(15rem, 26vw, 20rem);
+  }
+
+  &__card {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+    height: 100%;
+    padding: var(--spacing-m);
+    color: var(--color-text);
+    text-decoration: none;
+    @include surface-card;
+  }
+
+  &__media {
+    display: block;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+  }
+
+  &__title {
+    margin: 0;
+    font-family: var(--font-body);
+    font-size: var(--fs-h3);
+    font-weight: 700;
+    line-height: var(--line-snug);
+  }
+
+  &__text {
+    margin: 0;
+    font-size: var(--fs-small);
+    font-style: italic;
+    line-height: var(--line-base);
+    color: var(--color-text-muted);
+  }
+
+  // Navigation arrows -------------------------------------------------------
+  &__nav {
+    position: absolute;
+    top: 50%;
+    z-index: var(--z-carousel-nav);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.75rem;
+    height: 2.75rem;
+    padding: 0;
+    color: var(--color-on-accent);
+    background-color: var(--color-accent);
+    border: 0;
+    border-radius: var(--radius-pill);
+    box-shadow: var(--shadow-card);
+    cursor: pointer;
+    transform: translateY(-50%);
+    transition: opacity var(--dur) var(--ease), transform var(--dur) var(--ease);
+
+    &--prev { left: 0; }
+    &--next { right: 0; }
+
+    &:hover { transform: translateY(-50%) scale(1.08); }
+    &[hidden] { display: none; }
+    &:disabled { opacity: 0.35; cursor: default; transform: translateY(-50%); }
+
+    // CSS-drawn chevron (no asset, CSP-safe)
+    &::before {
+      content: "";
+      width: 0.6em;
+      height: 0.6em;
+      border-right: 2px solid currentColor;
+      border-bottom: 2px solid currentColor;
+    }
+    &--next::before { transform: translateX(-2px) rotate(-45deg); }
+    &--prev::before { transform: translateX(2px) rotate(135deg); }
+  }
+
+  // Variant: logo-only cards (memberships) ----------------------------------
+  &--logos {
+    .ds-carousel__track { max-width: var(--carousel-logos-max); }
+    .ds-carousel__item  { width: clamp(9rem, 22vw, 12rem); }
+    .ds-carousel__card  { align-items: center; justify-content: center; }
+    .ds-carousel__media { aspect-ratio: 1 / 1; }
+  }
+}

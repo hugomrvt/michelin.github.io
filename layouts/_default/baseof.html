@@ -1,7 +1,9 @@
 <!DOCTYPE html>
 <html lang="en" data-brand="commercial" dir="ltr">
     <head>
-        {{ $css := slice (resources.Get "css/vendor.css") (resources.Get "css/tokens.css") (resources.Get "css/system.css") | resources.Concat "css/bundle.css" | resources.Minify | resources.Fingerprint }}
+        {{ $sass := dict "transpiler" "libsass" "outputStyle" "compressed" }}
+        {{ $system := resources.Get "scss/main.scss" | css.Sass $sass }}
+        {{ $css := slice (resources.Get "css/vendor.css") $system | resources.Concat "css/bundle.css" | resources.Minify | resources.Fingerprint }}
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <link rel="icon" sizes="any" href="/images/favicon.png">

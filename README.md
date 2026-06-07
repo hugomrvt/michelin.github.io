@@ -34,25 +34,25 @@ deployed to **GitHub Pages** via GitHub Actions.
 | Generator    | [Hugo](https://gohugo.io/) (static site generator) |
 | Templating   | Go HTML templates (`layouts/`) |
 | Content      | Markdown + inline HTML (`content/`) |
-| Styling      | A small **design system** (`tokens` + `vendor` + `system`) bundled by Hugo — see [Design system](#design-system) |
+| Styling      | A small **design system** written in **SCSS** (`assets/scss/`), compiled by Hugo — see [Design system](#design-system) |
 | Scripting    | Vanilla JavaScript (`assets/js/`), bundled by Hugo |
 | Hosting      | GitHub Pages (custom domain via `CNAME`) |
 | CI/CD        | GitHub Actions (`.github/workflows/deploy.yml`) |
 
 There is **no Node/npm tooling** in this repository — no `package.json`, no
-bundler. Asset bundling (concatenate → minify → fingerprint) is done by **Hugo
-Pipes** alone.
+bundler. SCSS compilation and asset bundling (compile → concatenate → minify →
+fingerprint) are done by **Hugo Pipes** alone.
 
 ## Prerequisites
 
-- **Hugo** — the CI uses the latest release. The site uses Hugo Pipes
-  (`resources.Concat`, `resources.Minify`, `resources.Fingerprint`) on plain
-  CSS/JS, so the **extended** edition is *not* required.
+- **Hugo extended** — *required*, because the design system is written in SCSS
+  and compiled with `css.Sass` (libsass, built into the extended edition). The
+  CI installs it via `extended: true` in the workflow.
 
 Install Hugo: <https://gohugo.io/installation/>
 
 ```bash
-hugo version   # confirm Hugo is on your PATH
+hugo version   # must report "+extended"
 ```
 
 ## Local development
@@ -101,10 +101,16 @@ build by hand — the [deployment workflow](#deployment) does it for you.
 │           ├── footer.html         # Footer (socials, legal link, copyright)
 │           └── backtotop.html      # "Back to top" button markup
 ├── assets/
+│   ├── scss/                       # Design system (SCSS, compiled by Hugo)
+│   │   ├── main.scss               #   entry point (@import order)
+│   │   ├── _functions.scss         #   fluid() clamp() generator
+│   │   ├── _mixins.scss            #   visually-hidden, focus-ring, surface-card
+│   │   ├── _tokens.scss            #   design tokens → :root custom properties
+│   │   ├── _typography.scss        #   fluid type on existing utilities + hero
+│   │   ├── _carousel.scss          #   swipeable carousel component
+│   │   └── _utilities.scss         #   a11y helpers
 │   ├── css/
-│   │   ├── tokens.css              # Design tokens (single source of truth)
-│   │   ├── vendor.css              # Legacy compiled Michelin design system
-│   │   └── system.css             # Fluid typography, components, a11y
+│   │   └── vendor.css              # Legacy compiled Michelin design system
 │   └── js/
 │       ├── script.js               # Burger menu + back‑to‑top
 │       └── carousel.js             # Swipeable carousel controller
@@ -142,23 +148,34 @@ Common front‑matter keys: `title`, `Description`, `images` (social share image
 
 ## Design system
 
-Styling is organised as a **simple, layered design system** bundled by Hugo in
-this order (`baseof.html`):
+The design system is written in **SCSS** under `assets/scss/` and compiled by
+Hugo (`css.Sass`, libsass). `baseof.html` then concatenates the legacy CSS with
+the compiled output:
 
 ```
-vendor.css  →  tokens.css  →  system.css   ⇒  concat → minify → fingerprint
+vendor.css  +  scss/main.scss → CSS   ⇒  concat → minify → fingerprint
+   (legacy)        (design system, loaded last so it wins)
 ```
 
-| File         | Role |
-|--------------|------|
-| `vendor.css` | The legacy, pre‑compiled Michelin design system (≈3,200 lines). Treated as a **vendored asset** — there is no source pipeline for it in this repo, so edit it directly and sparingly. |
-| `tokens.css` | The **single source of truth** for design tokens. Loaded *after* `vendor.css` so it overrides the legacy token values with **fluid** ones, and adds new tokens (type scale, motion, radii…). |
-| `system.css` | The "controlled modernisation" layer: applies the fluid type scale, refines the hero, defines the swipeable **carousel** component, and adds accessibility utilities. Loaded last, so it wins. |
+`main.scss` imports the partials in order:
 
-**Why this order?** CSS custom properties resolve at use‑time. Because
-`tokens.css` redefines `--spacing-*` (etc.) *after* `vendor.css`, every existing
-rule that already uses `var(--spacing-*)` automatically becomes fluid — no need
-to touch the vendor rules.
+| Partial | Role |
+|---------|------|
+| `_functions.scss` | `fluid($min, $max)` — generates `clamp()` values from a min/max (max = former desktop value). |
+| `_mixins.scss`    | `visually-hidden`, `focus-ring`, `surface-card`. |
+| `_tokens.scss`    | **Single source of truth.** Sass maps for the type/spacing scales, emitted as `:root` custom properties (colours, fluid type, fluid spacing, radii, motion, layout, z‑index). |
+| `_typography.scss`| Applies the fluid type scale to the existing heading utilities + the hero. |
+| `_carousel.scss`  | The swipeable **carousel** component (`.ds-carousel`). |
+| `_utilities.scss` | Accessibility helpers (`visually-hidden`, `:focus-visible`, reduced‑motion). |
+
+`vendor.css` is the legacy, pre‑compiled Michelin design system (≈3,200 lines),
+kept as a **vendored asset** (edit directly and sparingly — there is no source
+pipeline for it here). It is intentionally kept *out* of the SCSS pipeline.
+
+**Why compile after vendor?** CSS custom properties resolve at use‑time. Because
+`_tokens.scss` redefines `--spacing-*` (etc.) in a `:root` that lands *after*
+`vendor.css`, every existing rule that already uses `var(--spacing-*)`
+automatically becomes fluid — no need to touch the vendor rules.
 
 **Fluid by design.** Spacing and typography use `clamp()` so the layout scales
 smoothly between phone and desktop instead of jumping at breakpoints. Each

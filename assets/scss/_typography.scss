@@ -1,0 +1,36 @@
+// =============================================================================
+//  Fluid typography
+// -----------------------------------------------------------------------------
+//  Only swaps font-size of the existing utility classes to the fluid scale; the
+//  families, colours and weights defined in vendor.css are preserved.
+// =============================================================================
+
+.h2-mobile-white-bold {
+  font-size: var(--fs-h2);
+  font-family: var(--font-display);
+}
+.h3-white-bold    { font-size: var(--fs-h3); }
+.h4-white-regular { font-size: var(--fs-h4); }
+.h5-white-regular { font-size: var(--fs-h5); }
+.h6-white-bold    { font-size: var(--fs-h6); }
+
+#legal-mention {
+  h1 { font-size: var(--fs-h2); }
+  h2 { font-size: var(--fs-h3); }
+  h3 { font-size: var(--fs-h4); }
+}
+
+// Hero — fluid title with a legible minimum (legacy 3.7vw shrank to ~14px on
+// small phones).
+.hero_content {
+  h1 {
+    font-size: var(--fs-display);
+    line-height: var(--line-tight);
+
+    span { font-size: var(--fs-display-2); }
+  }
+  p {
+    font-size: var(--fs-lead);
+    line-height: var(--line-snug);
+  }
+}

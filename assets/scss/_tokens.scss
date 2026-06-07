@@ -1,0 +1,104 @@
+// =============================================================================
+//  Design tokens — single source of truth
+// -----------------------------------------------------------------------------
+//  Authored as Sass maps/variables, emitted as CSS custom properties so that
+//  (a) runtime theming stays possible and (b) the legacy vendor.css rules, which
+//  already use var(--spacing-*), automatically pick up the new fluid values.
+//
+//  This partial is concatenated AFTER vendor.css, so these :root declarations
+//  override the legacy fixed token values.
+// =============================================================================
+
+// ---- Brand palette (authoring variables) -----------------------------------
+$color-bg:      #0e1532; // Michelin dark blue
+$color-text:    #ffffff;
+$color-primary: #27509b; // Michelin blue
+$color-accent:  #fce500; // bold yellow
+$color-purple:  #5b6ee6;
+
+// ---- Scales: (min, max) in rem; fluid() turns them into clamp() ------------
+$type-scale: (
+  "display":   (1.75, 4.5),   // hero title
+  "display-2": (1.25, 3.25),  // hero subtitle
+  "h2":        (1.375, 1.75), // section titles
+  "h3":        (1.25, 1.5),
+  "h4":        (1.125, 1.375),
+  "h5":        (1.05, 1.25),
+  "h6":        (1, 1.125),
+  "lead":      (0.95, 1.4),   // hero tagline
+);
+
+$space-scale: (
+  "sm":     (0.75, 1),    //  12 – 16
+  "m":      (1, 1.5),     //  16 – 24
+  "ml":     (1.25, 2),    //  20 – 32
+  "l":      (1.5, 2.5),   //  24 – 40
+  "xl":     (1.75, 3),    //  28 – 48
+  "xxl":    (2, 4),       //  32 – 64
+  "xxl-9":  (2.25, 4.5),  //  36 – 72
+  "xxl-10": (2.5, 5),     //  40 – 80
+  "xxl-12": (3, 6),       //  48 – 96
+  "xxl-16": (3.5, 8),     //  56 – 128
+);
+
+:root {
+  // ---- Colours -------------------------------------------------------------
+  --color-bg:                 #{$color-bg};
+  --color-text:               #{$color-text};
+  --color-text-muted:         rgba(255, 255, 255, 0.72);
+  --color-primary:            var(--michelin-blue, #{$color-primary});
+  --color-accent:             var(--bold-yellow, #{$color-accent});
+  --color-on-accent:          var(--michelin-dark-blue, #{$color-bg});
+  --color-purple:             var(--michelin-purple, #{$color-purple});
+  --color-create:             #a4ffae;
+  --color-consume:            var(--bold-yellow, #{$color-accent});
+  --color-contribute:         #ccffff;
+  --color-card-border:        rgba(255, 255, 255, 0.17);
+  --color-card-border-hover:  rgba(255, 255, 255, 0.30);
+  --color-card-bg-hover:      rgba(255, 255, 255, 0.10);
+
+  // ---- Typography ----------------------------------------------------------
+  --font-display:       "MichelinUnitTitling-Bold", "MichelinUnitTitling-Regular", "Trebuchet MS", system-ui, sans-serif;
+  --font-display-light: "MichelinUnitTitling-Light", "MichelinUnitTitling-Regular", system-ui, sans-serif;
+  --font-body:          "Noto Sans", system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+
+  --line-tight: 1.2;
+  --line-snug:  1.35;
+  --line-base:  1.5;
+
+  @each $name, $range in $type-scale {
+    --fs-#{$name}: #{fluid(nth($range, 1), nth($range, 2))};
+  }
+  --fs-body:  1rem;
+  --fs-small: 0.875rem;
+
+  // ---- Spacing -------------------------------------------------------------
+  --spacing-xs: 2px;   // small steps stay fixed — fluidising 2–8px is pointless
+  --spacing-s:  4px;
+  --spacing:    8px;
+  @each $name, $range in $space-scale {
+    --spacing-#{$name}: #{fluid(nth($range, 1), nth($range, 2))};
+  }
+  --space-section: var(--spacing-xxl);
+  --space-gap:     var(--spacing-m);
+
+  // ---- Radii / elevation ---------------------------------------------------
+  --radius-sm:   5px;
+  --radius-md:   8px;
+  --radius-lg:   11px;
+  --radius-pill: 999px;
+  --shadow-card: 0 6px 20px rgba(0, 0, 0, 0.25);
+
+  // ---- Motion --------------------------------------------------------------
+  --ease:     cubic-bezier(0.4, 0, 0.2, 1);
+  --dur-fast: 150ms;
+  --dur:      300ms;
+  --dur-slow: 500ms;
+
+  // ---- Layout / z-index ----------------------------------------------------
+  --container-max:      1100px;
+  --carousel-logos-max: 800px;
+  --z-base:         1;
+  --z-carousel-nav: 5;
+  --z-header:       100;
+}
