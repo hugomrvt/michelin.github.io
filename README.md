@@ -16,7 +16,7 @@ deployed to **GitHub Pages** via GitHub Actions.
 - [Building for production](#building-for-production)
 - [Project structure](#project-structure)
 - [Editing content](#editing-content)
-- [Styling](#styling)
+- [Design system](#design-system)
 - [JavaScript](#javascript)
 - [Images](#images)
 - [Deployment](#deployment)
@@ -34,20 +34,20 @@ deployed to **GitHub Pages** via GitHub Actions.
 | Generator    | [Hugo](https://gohugo.io/) (static site generator) |
 | Templating   | Go HTML templates (`layouts/`) |
 | Content      | Markdown + inline HTML (`content/`) |
-| Styling      | A single pre‑compiled stylesheet, `assets/css/out.css` (see [Styling](#styling)) |
-| Scripting    | Vanilla JavaScript, `assets/js/script.js` |
+| Styling      | A small **design system** (`tokens` + `vendor` + `system`) bundled by Hugo — see [Design system](#design-system) |
+| Scripting    | Vanilla JavaScript (`assets/js/`), bundled by Hugo |
 | Hosting      | GitHub Pages (custom domain via `CNAME`) |
 | CI/CD        | GitHub Actions (`.github/workflows/deploy.yml`) |
 
 There is **no Node/npm tooling** in this repository — no `package.json`, no
-bundler, no CSS build step. Everything is driven by Hugo alone.
+bundler. Asset bundling (concatenate → minify → fingerprint) is done by **Hugo
+Pipes** alone.
 
 ## Prerequisites
 
 - **Hugo** — the CI uses the latest release. The site uses Hugo Pipes
-  (`resources.Minify`, `resources.Fingerprint`) on plain CSS/JS, so the
-  **extended** edition is *not* required, but it works fine and is a safe
-  default.
+  (`resources.Concat`, `resources.Minify`, `resources.Fingerprint`) on plain
+  CSS/JS, so the **extended** edition is *not* required.
 
 Install Hugo: <https://gohugo.io/installation/>
 
@@ -68,7 +68,7 @@ Then open <http://localhost:1313>.
 Useful flags:
 
 ```bash
-hugo server -D            # also render draft content
+hugo server -D                    # also render draft content
 hugo server --disableFastRender   # full rebuild on every change
 ```
 
@@ -92,7 +92,7 @@ build by hand — the [deployment workflow](#deployment) does it for you.
 │   └── legal-notice.md             # Legal notice page (/legal-notice)
 ├── layouts/
 │   ├── _default/
-│   │   ├── baseof.html             # Base HTML skeleton (<head>, header, main, footer)
+│   │   ├── baseof.html             # Base skeleton + asset bundling pipeline
 │   │   ├── index.html              # Home template (renders .Content)
 │   │   └── single.html             # Single‑page template (legal notice, etc.)
 │   └── partials/
@@ -101,10 +101,15 @@ build by hand — the [deployment workflow](#deployment) does it for you.
 │           ├── footer.html         # Footer (socials, legal link, copyright)
 │           └── backtotop.html      # "Back to top" button markup
 ├── assets/
-│   ├── css/out.css                 # Pre‑compiled stylesheet (see Styling)
-│   └── js/script.js                # Burger menu + back‑to‑top behaviour
-├── static/
-│   └── images/                     # All images, served as‑is from /images/...
+│   ├── css/
+│   │   ├── tokens.css              # Design tokens (single source of truth)
+│   │   ├── vendor.css              # Legacy compiled Michelin design system
+│   │   └── system.css             # Fluid typography, components, a11y
+│   └── js/
+│       ├── script.js               # Burger menu + back‑to‑top
+│       └── carousel.js             # Swipeable carousel controller
+├── static/images/                  # All images, served as‑is from /images/...
+├── DESIGN_SYSTEM.md                # Design system reference
 └── .github/workflows/deploy.yml    # Build & deploy to GitHub Pages
 ```
 
@@ -112,11 +117,10 @@ build by hand — the [deployment workflow](#deployment) does it for you.
 
 1. `hugo.toml` provides global config and `[params]`.
 2. A file in `content/` provides the page body (Markdown/HTML) and front matter.
-3. `layouts/_default/baseof.html` wraps everything: it injects the minified CSS,
-   the `header` partial, the page `main` block, the `footer` partial, the
-   back‑to‑top button, and the fingerprinted JS bundle.
-4. `index.html` / `single.html` simply emit `{{ .Content }}` into the `main`
-   block.
+3. `layouts/_default/baseof.html` wraps everything: it bundles the CSS and JS
+   (see below), injects the `header` partial, the page `main` block, the
+   `footer` partial, and the back‑to‑top button.
+4. `index.html` / `single.html` emit `{{ .Content }}` into the `main` block.
 
 > **Note** — `markup.goldmark.renderer.unsafe = true` is enabled in
 > `hugo.toml`. This is required because the content files embed raw HTML
@@ -133,56 +137,51 @@ page body.
 - **Legal notice** → `content/legal-notice.md`
   Uses `template: "single"` and `url: "/legal-notice"` in its front matter.
 
-Common front‑matter keys used here:
+Common front‑matter keys: `title`, `Description`, `images` (social share image),
+`template`, `url`, `headerFixed`.
 
-| Key            | Purpose |
-|----------------|---------|
-| `title`        | `<title>` and OpenGraph/Twitter title |
-| `Description`  | Meta description and social description |
-| `images`       | Social share image (OpenGraph/Twitter) |
-| `template`     | Layout to use (e.g. `single`) |
-| `url`          | Custom permalink |
-| `headerFixed`  | If true, renders a fixed (vs sticky) header |
+## Design system
 
-## Styling
+Styling is organised as a **simple, layered design system** bundled by Hugo in
+this order (`baseof.html`):
 
-All styling is in **`assets/css/out.css`** — a **single, pre‑compiled
-stylesheet** (~3,200 lines). Hugo minifies it at build time
-(`resources.Minify`).
+```
+vendor.css  →  tokens.css  →  system.css   ⇒  concat → minify → fingerprint
+```
 
-Key things to know:
+| File         | Role |
+|--------------|------|
+| `vendor.css` | The legacy, pre‑compiled Michelin design system (≈3,200 lines). Treated as a **vendored asset** — there is no source pipeline for it in this repo, so edit it directly and sparingly. |
+| `tokens.css` | The **single source of truth** for design tokens. Loaded *after* `vendor.css` so it overrides the legacy token values with **fluid** ones, and adds new tokens (type scale, motion, radii…). |
+| `system.css` | The "controlled modernisation" layer: applies the fluid type scale, refines the hero, defines the swipeable **carousel** component, and adds accessibility utilities. Loaded last, so it wins. |
 
-- The file name `out.css` implies it was *generated* by an external pipeline
-  (it carries the conventions of Michelin's internal design system — e.g.
-  `feature-cards-slider-widget`, `apos-area`, Splide carousel classes). **The
-  source for this pipeline is not part of this repository.**
-- Practically, this means: **edit `out.css` directly.** There is no
-  `npm run build:css` to regenerate it here. Treat it as a vendored asset and
-  keep changes surgical.
-- It ships **design tokens** as CSS custom properties on `:root`, e.g.
-  spacing (`--spacing-xs` … `--spacing-xxl-16`), a grayscale ramp
-  (`--gray-darken-*` / `--gray-lighten-*`), and semantic colors
-  (`--primary-color`, `--accent-color`, `--link-color`, `--success-color`,
-  `--error-color`). Prefer these tokens over hard‑coded values.
-- Layout uses a Bootstrap‑like grid (`container`, `row`, `col-sm-4`,
-  `col-lg-4`, …).
+**Why this order?** CSS custom properties resolve at use‑time. Because
+`tokens.css` redefines `--spacing-*` (etc.) *after* `vendor.css`, every existing
+rule that already uses `var(--spacing-*)` automatically becomes fluid — no need
+to touch the vendor rules.
+
+**Fluid by design.** Spacing and typography use `clamp()` so the layout scales
+smoothly between phone and desktop instead of jumping at breakpoints. Each
+clamp's **maximum equals the previous fixed desktop value**, so large screens
+render as before and only smaller screens scale down.
+
+See **[DESIGN_SYSTEM.md](DESIGN_SYSTEM.md)** for the full token reference, the
+type/spacing scales, component docs, and conventions.
 
 ## JavaScript
 
-`assets/js/script.js` is plain, dependency‑free JS handling two things:
+`assets/js/` holds plain, dependency‑free scripts, bundled by Hugo
+(`concat → minify → fingerprint`):
 
-1. **Back‑to‑top button** — shown after scrolling past one viewport height on
-   long pages (`document.body.scrollHeight > 3000`).
-2. **Mobile navigation** — the burger toggles `opened` / `no-scroll` classes;
-   clicking a nav link or the close button collapses the menu.
-
-The bundle is minified and fingerprinted by Hugo
-(`resources.Minify | resources.Fingerprint`) for cache‑busting.
+- **`script.js`** — the back‑to‑top button and the mobile burger navigation.
+- **`carousel.js`** — drives the swipeable carousels: prev/next buttons and
+  click‑and‑drag on desktop. Touch swiping itself is native (CSS scroll‑snap),
+  so no third‑party slider library is needed.
 
 > A strict **Content‑Security‑Policy** is set in `baseof.html`
-> (`script-src 'self'; object-src 'none'`). Any new JavaScript must be
-> first‑party (served from this site). Inline scripts and third‑party CDNs are
-> blocked by design.
+> (`script-src 'self'; object-src 'none'`). All JavaScript must be first‑party.
+> Inline scripts and third‑party CDNs are blocked by design — which is exactly
+> why the carousel is built in‑house.
 
 ## Images
 
@@ -191,16 +190,10 @@ All images live in `static/images/` and are referenced with absolute paths
 process them.
 
 **Optimization (recommended, not yet applied):** a few assets are heavy
-(`couv.png` ~668 KB, `fond.png` ~320 KB, `oss-activities.png` ~272 KB,
-`blog.png` ~140 KB). To shrink them you would typically:
-
-1. Convert to **WebP/AVIF** (e.g. `cwebp -q 80 couv.png -o couv.webp`).
-2. Update the references (`<img src>` and CSS `background-image: url(...)`).
-
-A more idiomatic Hugo approach is to move images into `assets/` and use
-[image processing](https://gohugo.io/content-management/image-processing/)
-(`.Resize`, `.Fit`, WebP output) from templates. This is left as a future
-improvement to avoid changing binary assets without a visual review.
+(`couv.png` ~668 KB, `fond.png` ~320 KB, `oss-activities.png` ~272 KB). To shrink
+them, convert to **WebP/AVIF** and update the references, or move them into
+`assets/` and use [Hugo image processing](https://gohugo.io/content-management/image-processing/).
+Deferred to keep binary changes out of this change set (they need a visual review).
 
 ## Deployment
 
@@ -208,40 +201,33 @@ Deployment is automated by **`.github/workflows/deploy.yml`**:
 
 - **Trigger:** push to `main` (or manual `workflow_dispatch`).
 - **Build:** checks out the repo, installs Hugo, runs `hugo --minify`.
-- **Deploy:** uploads `public/` as a Pages artifact and publishes it to GitHub
-  Pages.
+- **Deploy:** uploads `public/` as a Pages artifact and publishes it.
 
-The custom domain `opensource.michelin.io` is configured via the `CNAME` file.
+The custom domain `opensource.michelin.io` is configured via `CNAME`.
 
-> Pushing to a feature branch does **not** deploy. Open a pull request and
-> merge to `main` to publish.
+> Pushing to a feature branch does **not** deploy. Open a pull request and merge
+> to `main` to publish. (No CI runs on PRs — only `main` triggers the workflow.)
 
 ## Accessibility & SEO
 
-- Decorative images use empty `alt=""`; meaningful images carry descriptive
-  `alt` text.
-- The contact email in the header is obfuscated with HTML entities to deter
-  scrapers.
-- `baseof.html` emits OpenGraph and Twitter card metadata, a meta description,
-  keywords, `robots`, viewport, theme color, and a favicon.
-- `enableRobotsTXT = true` in `hugo.toml` generates `robots.txt`.
+- Decorative images use empty/`aria-hidden`; meaningful images carry descriptive
+  text (carousel logos expose their name via `role="img"` + `aria-label`).
+- Carousel arrows are real `<button>`s with `aria-label`s and visible
+  `:focus-visible` rings; `prefers-reduced-motion` is respected.
+- The contact email in the header is obfuscated with HTML entities.
+- `baseof.html` emits OpenGraph + Twitter cards, meta description, keywords,
+  `robots`, viewport, theme color, favicon, and font `preconnect`s.
+- `enableRobotsTXT = true` generates `robots.txt`.
 
 ## Maintenance & known caveats
 
-These are intentional/known quirks — please read before "fixing" them:
-
-- **Carousels are static.** The home page uses Splide‑style markup
-  (`splide__*` classes) for the *Memberships* and *Projects* rows, but **no
-  Splide JavaScript is loaded** (and the CSP would block a third‑party CDN
-  anyway). The rows render as static grids. Crucially, the CSS sets
-  `.splide { visibility: hidden; }`, so the **inline `style="...visibility:
-  visible;"` on the wrapper is load‑bearing** — removing it would hide the
-  cards. Do not strip these inline styles unless you also adjust the CSS.
-- **`out.css` has no in‑repo source.** See [Styling](#styling) — edit it
-  directly; there is no build step to regenerate it here.
-- **Image weights.** See [Images](#images) — some PNGs are large; WebP/AVIF
-  conversion is recommended but deliberately deferred (no image tooling in the
-  default toolchain, and binary changes warrant a visual review).
+- **`vendor.css` has no in‑repo source.** See [Design system](#design-system) —
+  edit it directly; there is no build step to regenerate it here.
+- **Fonts load from external CDNs** via `@font-face` in `vendor.css`
+  (MichelinUnitTitling from Azure Blob, Noto Sans from Google Fonts). The CSP
+  does not restrict fonts. `preconnect` hints are set for both hosts.
+- **Image weights.** See [Images](#images) — WebP/AVIF conversion is recommended
+  but deliberately deferred.
 - **`unsafe` Markdown is required.** Content embeds raw HTML; disabling
   `markup.goldmark.renderer.unsafe` would break the pages.
 
@@ -249,11 +235,9 @@ These are intentional/known quirks — please read before "fixing" them:
 
 1. Create a feature branch from `main`.
 2. Make your changes and verify locally with `hugo server`.
-3. Open a pull request against `main`. Merging to `main` triggers the
-   production deploy.
-
-Please keep changes minimal and consistent with the existing markup and design
-tokens.
+3. Reuse design tokens (see [DESIGN_SYSTEM.md](DESIGN_SYSTEM.md)) instead of
+   hard‑coded values; prefer `clamp()`/tokens over new breakpoints.
+4. Open a pull request against `main`. Merging to `main` triggers the deploy.
 
 ## Legal
 

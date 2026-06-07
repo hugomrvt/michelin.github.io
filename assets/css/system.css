@@ -1,0 +1,189 @@
+/* =============================================================================
+   Design System — System layer
+   -----------------------------------------------------------------------------
+   Loaded LAST (after vendor.css and tokens.css) so it wins on equal specificity.
+   Contains:
+     1. Fluid typography (applies the type scale to the existing utility classes)
+     2. Hero refinements
+     3. The swipeable carousel component (.ds-carousel)
+     4. Utilities & accessibility
+   Keeps Michelin's identity — only harmonises rhythm and makes it fluid.
+   ========================================================================== */
+
+/* 1. Fluid typography -------------------------------------------------------
+   Override only the font-size of the existing heading utilities so colours,
+   weights and families defined in vendor.css are preserved.                   */
+.h2-mobile-white-bold { font-size: var(--fs-h2); font-family: var(--font-display); }
+.h3-white-bold        { font-size: var(--fs-h3); }
+.h4-white-regular     { font-size: var(--fs-h4); }
+.h5-white-regular     { font-size: var(--fs-h5); }
+.h6-white-bold        { font-size: var(--fs-h6); }
+
+#legal-mention h1 { font-size: var(--fs-h2); }
+#legal-mention h2 { font-size: var(--fs-h3); }
+#legal-mention h3 { font-size: var(--fs-h4); }
+
+/* 2. Hero -------------------------------------------------------------------
+   Make the title fluid with a sensible minimum so it stays legible on phones
+   (the legacy 3.7vw shrank to ~14px on a 375px screen).                       */
+.hero_content h1      { font-size: var(--fs-display); line-height: var(--line-tight); }
+.hero_content h1 span { font-size: var(--fs-display-2); }
+.hero_content p       { font-size: var(--fs-lead); line-height: var(--line-snug); }
+
+/* 3. Carousel ---------------------------------------------------------------
+   Native, CSP-safe swipeable slider: CSS scroll-snap provides touch swiping,
+   a small first-party script (carousel.js) wires the prev/next buttons and
+   pointer drag. No third-party library.                                       */
+.ds-carousel {
+  position: relative;
+  padding-block: var(--spacing-ml);
+}
+
+.ds-carousel__track {
+  display: flex;
+  gap: var(--space-gap);
+  align-items: stretch;
+  justify-content: safe center;      /* centre when it fits, scroll when it doesn't */
+  max-width: var(--container-max);
+  margin-inline: auto;
+  padding: var(--spacing-sm) var(--spacing-l);
+  list-style: none;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;             /* Firefox */
+}
+.ds-carousel__track::-webkit-scrollbar { display: none; } /* WebKit */
+
+.ds-carousel--logos .ds-carousel__track { max-width: var(--carousel-logos-max); }
+
+.ds-carousel__item {
+  flex: 0 0 auto;
+  scroll-snap-align: center;
+  width: clamp(15rem, 26vw, 20rem);
+}
+.ds-carousel--logos .ds-carousel__item { width: clamp(9rem, 22vw, 12rem); }
+
+/* Card */
+.ds-carousel__card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+  height: 100%;
+  padding: var(--spacing-m);
+  text-decoration: none;
+  color: var(--color-text);
+  border: 1px solid var(--color-card-border);
+  border-radius: var(--radius-lg);
+  transition: background-color var(--dur) var(--ease),
+              border-color var(--dur) var(--ease),
+              transform var(--dur) var(--ease);
+}
+.ds-carousel__card:hover,
+.ds-carousel__card:focus-visible {
+  background-color: var(--color-card-bg-hover);
+  border-color: var(--color-card-border-hover);
+  transform: translateY(-4px);
+}
+.ds-carousel--logos .ds-carousel__card {
+  align-items: center;
+  justify-content: center;
+}
+
+.ds-carousel__media {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+}
+.ds-carousel--logos .ds-carousel__media { aspect-ratio: 1 / 1; }
+
+.ds-carousel__title {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: var(--fs-h3);
+  font-weight: 700;
+  line-height: var(--line-snug);
+}
+.ds-carousel__text {
+  margin: 0;
+  font-size: var(--fs-small);
+  font-style: italic;
+  line-height: var(--line-base);
+  color: var(--color-text-muted);
+}
+
+/* Navigation arrows */
+.ds-carousel__nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: var(--z-carousel-nav);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  padding: 0;
+  cursor: pointer;
+  color: var(--color-on-accent);
+  background-color: var(--color-accent);
+  border: 0;
+  border-radius: var(--radius-pill);
+  box-shadow: var(--shadow-card);
+  transition: opacity var(--dur) var(--ease), transform var(--dur) var(--ease);
+}
+.ds-carousel__nav--prev { left: 0; }
+.ds-carousel__nav--next { right: 0; }
+.ds-carousel__nav:hover { transform: translateY(-50%) scale(1.08); }
+.ds-carousel__nav[hidden] { display: none; }
+.ds-carousel__nav:disabled { opacity: 0.35; cursor: default; transform: translateY(-50%); }
+
+/* CSS-drawn chevron (no asset, CSP-safe) */
+.ds-carousel__nav::before {
+  content: "";
+  width: 0.6em;
+  height: 0.6em;
+  border-right: 2px solid currentColor;
+  border-bottom: 2px solid currentColor;
+}
+.ds-carousel__nav--next::before { transform: translateX(-2px) rotate(-45deg); }
+.ds-carousel__nav--prev::before { transform: translateX(2px) rotate(135deg); }
+
+/* Grab cursor while dragging on desktop */
+.ds-carousel__track.is-dragging {
+  cursor: grabbing;
+  scroll-snap-type: none;
+  scroll-behavior: auto;
+}
+
+/* 4. Utilities & accessibility ---------------------------------------------- */
+.visually-hidden {
+  position: absolute !important;
+  width: 1px; height: 1px;
+  margin: -1px; padding: 0; border: 0;
+  overflow: hidden; clip: rect(0 0 0 0); clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* Visible keyboard focus across interactive elements */
+a:focus-visible,
+button:focus-visible,
+.ds-carousel__card:focus-visible {
+  outline: 3px solid var(--color-accent);
+  outline-offset: 3px;
+  border-radius: var(--radius-sm);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  .ds-carousel__track {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
+}

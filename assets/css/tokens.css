@@ -1,0 +1,100 @@
+/* =============================================================================
+   Design System — Tokens (single source of truth)
+   -----------------------------------------------------------------------------
+   Loaded AFTER vendor.css so these values override the legacy tokens while
+   keeping the same names, which means existing rules that already use
+   var(--spacing-*) automatically become fluid.
+
+   Rule of thumb for fluid values: the clamp() MAX equals the current desktop
+   value, so large screens render as before and only smaller screens scale down.
+   ========================================================================== */
+
+:root {
+  /* ---- Brand palette (aliases over the legacy brand variables) ----------- */
+  --color-bg:               var(--michelin-dark-blue, #0e1532);
+  --color-text:             #ffffff;
+  --color-text-muted:       rgba(255, 255, 255, 0.72);
+  --color-primary:          var(--michelin-blue, #27509b);
+  --color-accent:           var(--bold-yellow, #fce500);
+  --color-on-accent:        var(--michelin-dark-blue, #0e1532);
+  --color-purple:           var(--michelin-purple, #5b6ee6);
+
+  /* Activity accents used on the home page */
+  --color-create:           #a4ffae;
+  --color-consume:          var(--bold-yellow, #fce500);
+  --color-contribute:       #ccffff;
+
+  /* Surfaces (translucent cards over the dark background) */
+  --color-card-border:        rgba(255, 255, 255, 0.17);
+  --color-card-border-hover:  rgba(255, 255, 255, 0.30);
+  --color-card-bg-hover:      rgba(255, 255, 255, 0.10);
+
+  /* ---- Typography -------------------------------------------------------- */
+  --font-display:        "MichelinUnitTitling-Bold", "MichelinUnitTitling-Regular", "Trebuchet MS", system-ui, sans-serif;
+  --font-display-light:  "MichelinUnitTitling-Light", "MichelinUnitTitling-Regular", system-ui, sans-serif;
+  --font-body:           "Noto Sans", system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+
+  --line-tight:   1.2;
+  --line-snug:    1.35;
+  --line-base:    1.5;
+
+  /* Fluid type scale — clamp(min, preferred, max), max = current desktop size */
+  --fs-display:  clamp(1.75rem, 1.1rem + 3.4vw, 4.5rem);   /* hero title    */
+  --fs-display-2:clamp(1.25rem, 0.9rem + 2.5vw, 3.25rem);  /* hero subtitle */
+  --fs-h2:       clamp(1.375rem, 1.1rem + 1.4vw, 1.75rem); /* section title */
+  --fs-h3:       clamp(1.25rem, 1.05rem + 1vw, 1.5rem);
+  --fs-h4:       clamp(1.125rem, 1rem + 0.6vw, 1.375rem);
+  --fs-h5:       clamp(1.05rem, 0.95rem + 0.5vw, 1.25rem);
+  --fs-h6:       clamp(1rem, 0.95rem + 0.3vw, 1.125rem);
+  --fs-lead:     clamp(0.95rem, 0.55rem + 1.2vw, 1.4rem);  /* hero tagline  */
+  --fs-body:     1rem;
+  --fs-small:    0.875rem;
+
+  /* ---- Spacing scale (fluid; overrides legacy fixed values) -------------- */
+  /* Small steps stay fixed — fluidising 2–8px is pointless. */
+  --spacing-xs:  2px;
+  --spacing-s:   4px;
+  --spacing:     8px;
+  --spacing-sm:     clamp(0.75rem, 0.62rem + 0.55vw, 1rem);     /*  12 – 16 */
+  --spacing-m:      clamp(1rem,    0.82rem + 0.8vw,  1.5rem);    /*  16 – 24 */
+  --spacing-ml:     clamp(1.25rem, 1rem + 1.1vw,     2rem);      /*  20 – 32 */
+  --spacing-l:      clamp(1.5rem,  1.2rem + 1.3vw,   2.5rem);    /*  24 – 40 */
+  --spacing-xl:     clamp(1.75rem, 1.4rem + 1.55vw,  3rem);      /*  28 – 48 */
+  --spacing-xxl:    clamp(2rem,    1.45rem + 2.4vw,  4rem);      /*  32 – 64 */
+  --spacing-xxl-9:  clamp(2.25rem, 1.6rem + 2.9vw,   4.5rem);    /*  36 – 72 */
+  --spacing-xxl-10: clamp(2.5rem,  1.75rem + 3.3vw,  5rem);      /*  40 – 80 */
+  --spacing-xxl-12: clamp(3rem,    2rem + 4.4vw,     6rem);      /*  48 – 96 */
+  --spacing-xxl-16: clamp(3.5rem,  2.2rem + 5.8vw,   8rem);      /*  56 – 128 */
+
+  /* Semantic spacing */
+  --space-section:  var(--spacing-xxl);
+  --space-gap:      var(--spacing-m);
+
+  /* ---- Radii ------------------------------------------------------------- */
+  --radius-sm:   5px;
+  --radius-md:   8px;
+  --radius-lg:   11px;
+  --radius-pill: 999px;
+
+  /* ---- Elevation --------------------------------------------------------- */
+  --shadow-card: 0 6px 20px rgba(0, 0, 0, 0.25);
+
+  /* ---- Layout ------------------------------------------------------------ */
+  --container-max:       1100px;
+  --carousel-logos-max:  800px;
+
+  /* ---- Motion ------------------------------------------------------------ */
+  --ease:       cubic-bezier(0.4, 0, 0.2, 1);
+  --dur-fast:   150ms;
+  --dur:        300ms;
+  --dur-slow:   500ms;
+
+  /* ---- Breakpoints (reference; CSS vars can't be used inside @media) ------
+     --bp-sm: 600px;  --bp-md: 960px;  --bp-lg: 1280px;
+     Components prefer fluid clamp() over breakpoints where possible.       */
+
+  /* ---- Z-index scale ----------------------------------------------------- */
+  --z-base:         1;
+  --z-carousel-nav: 5;
+  --z-header:       100;
+}
