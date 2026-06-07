@@ -19,10 +19,9 @@ images: ['images/michelin-oss.jpg']
                             Société en commandite par actions » au capital de 504 000 004 €.<br>855 200 507 R.C.S.
                             Clermont-Ferrand<br>N° SIREN 855 200 507<br>N° TVA Intracommunautaire FR33855200507</p>
                         <h3 id="hosted-by">HOSTED BY:</h3>
-                        GitHub Pages, a service of GitHub, Inc<br/>
-                        Inc88 Colin P Kelly Jr St, San Francisco, CA 94107, United States<br/>
-                        +1 877 448-4820
-                        </p>
+                        <p>GitHub Pages, a service of GitHub, Inc.<br/>
+                        88 Colin P Kelly Jr St, San Francisco, CA 94107, United States<br/>
+                        +1 877 448-4820</p>
                         <p><a
                                 href="https://docs.github.com/en/pages/getting-started-with-github-pages/about-github-pages#data-collection"
                                 rel="noreferrer noopener">About Github Pages data collection</a>.

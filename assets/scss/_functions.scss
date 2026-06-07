@@ -1,0 +1,20 @@
+// =============================================================================
+//  Functions
+// =============================================================================
+
+/// Fluid value generator — returns a clamp() that interpolates linearly between
+/// two viewport widths. By convention the MAX equals the former fixed desktop
+/// value, so large screens are unchanged and only small screens scale down.
+///
+/// @param {Number} $min   Minimum size in rem (unitless, e.g. 1.25)
+/// @param {Number} $max   Maximum size in rem (unitless, e.g. 2)
+/// @param {Number} $wmin  Lower viewport bound in px (unitless)
+/// @param {Number} $wmax  Upper viewport bound in px (unitless)
+@function fluid($min, $max, $wmin: 360, $wmax: 1440) {
+  $min-px: $min * 16;
+  $max-px: $max * 16;
+  $slope: ($max-px - $min-px) / ($wmax - $wmin);          // px per px
+  $vw: round($slope * 100 * 100) / 100;                    // vw, 2 dp
+  $intercept: round(($min-px - $slope * $wmin) / 16 * 1000) / 1000; // rem, 3 dp
+  @return clamp(#{$min}rem, #{$intercept}rem + #{$vw}vw, #{$max}rem);
+}

@@ -1,0 +1,14 @@
+// =============================================================================
+//  Michelin Open Source — Design system entry point
+// -----------------------------------------------------------------------------
+//  Compiled by Hugo (extended) and concatenated AFTER vendor.css, so the tokens
+//  here override the legacy fixed values and the components win on the cascade.
+//  See DESIGN_SYSTEM.md for the full reference.
+// =============================================================================
+
+@import "functions";   // fluid() clamp generator (must come first)
+@import "mixins";      // visually-hidden, focus-ring, surface-card
+@import "tokens";      // :root design tokens (override vendor, add new ones)
+@import "typography";  // fluid type on existing utilities + hero
+@import "carousel";    // swipeable carousel component
+@import "utilities";   // a11y helpers

@@ -1,0 +1,40 @@
+// =============================================================================
+//  Mixins
+// =============================================================================
+
+/// Screen-reader-only content.
+@mixin visually-hidden {
+  position: absolute !important;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  border: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/// Consistent, visible keyboard focus ring in the brand accent colour.
+@mixin focus-ring {
+  outline: 3px solid var(--color-accent);
+  outline-offset: 3px;
+  border-radius: var(--radius-sm);
+}
+
+/// Translucent card surface used over the dark background.
+@mixin surface-card {
+  border: 1px solid var(--color-card-border);
+  border-radius: var(--radius-lg);
+  transition: background-color var(--dur) var(--ease),
+              border-color var(--dur) var(--ease),
+              transform var(--dur) var(--ease);
+
+  &:hover,
+  &:focus-visible {
+    background-color: var(--color-card-bg-hover);
+    border-color: var(--color-card-border-hover);
+    transform: translateY(-4px);
+  }
+}

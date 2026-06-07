@@ -14,7 +14,7 @@ images: ['images/michelin-oss.jpg']
             <div>
                 <p>We make software <span>&amp; we <img class="heart" src="/images/coeur.svg" alt="💖"/> IT.</span></p>
             </div>
-        </div><img src="/images/couv.png" alt="Michelin Open Source" style="width: 100%;height: 100%;">
+        </div><img src="/images/couv.webp" alt="Michelin Open Source" style="width: 100%;height: 100%;">
     </div>
 </section>
 <section id="Manifesto">
@@ -54,7 +54,7 @@ images: ['images/michelin-oss.jpg']
                     <div class="container rationale">
                         <div class="row-content-direction-row md-row-content-direction-row">
                             <div class="col-lg-2 col-sm-2 align-center align-content-center">
-                                <img src="/images/picto.png" alt="Picto code" />
+                                <img src="/images/picto.webp" alt="Picto code" />
                             </div>
                             <div class="col-lg-10 align-center content-direction-column">
                                 <h4 class="h4-white-regular align-center">TALENT ACQUISITION AND RETENTION</h4>
@@ -67,7 +67,7 @@ images: ['images/michelin-oss.jpg']
                     <div class="container rationale">
                         <div class="row-content-direction-row md-row-content-direction-row">
                             <div class="col-lg-2 col-sm-2 align-center align-content-center">
-                                <img src="/images/code.png" alt="Let's code"/>
+                                <img src="/images/code.webp" alt="Let's code"/>
                             </div>
                             <div class="col-lg-10 align-center content-direction-column">
                                 <h4 class="h4-white-regular align-center">ENGINEERING ECONOMICS</h4>
@@ -80,7 +80,7 @@ images: ['images/michelin-oss.jpg']
                     <div class="container rationale">
                         <div class="row-content-direction-row md-row-content-direction-row">
                             <div class="col-lg-2 col-sm-2 align-center align-content-center">
-                                <img src="/images/Team.png" alt="Team work" />
+                                <img src="/images/Team.webp" alt="Team work" />
                             </div>
                             <div class="col-lg-10 align-center content-direction-column">
                                 <h4 class="h4-white-regular align-center">SUSTAIN THE OPEN SOURCE COMMUNITY</h4>
@@ -112,55 +112,26 @@ images: ['images/michelin-oss.jpg']
         </div>
     </div>
 </section>
-<section class="feature-cards-slider-widget scroll-container memberships" >
-    <div class="container">
-        <div class="feature-cards-widget__wrap row">
-            <div class="splide col splide--slide splide--ltr splide--draggable is-active" style="max-width: 100%; visibility: visible;">
-                <div class="slipe__slider">
-                    <div class="splide__track" >
-                        <div class="splide__list " style="transform: translateX(0px);">
-                            <div class="splide__slide col-4 col-sm-3" aria-hidden="false" tabindex="0">
-                                <div class="splide__slide__wrap">
-                                    <a href="https://www.cncf.io/" target="_blank">
-                                        <div class="splide__slide__image" style="background-image:url(/images/memberships/CNCF.png);"></div>
-                                        <div class="splide__slide__content">
-                                            <h3 class="splide__slide__title h3-white-bold">
-                                                Cloud Native Computing Foundation
-                                            </h3>
-                                        </div>
-                                    </a>
-                                </div>
-                            </div>
-                            <div class="splide__slide col-4 col-sm-3" aria-hidden="false" tabindex="0">
-                                <div class="splide__slide__wrap ">
-                                    <a href="https://www.linuxfoundation.org/" target="_blank">
-                                        <div class="splide__slide__image " style="background-image:url(/images/memberships/Linux-Foundation-data.png);"></div>
-                                        <div class="splide__slide__content ">
-                                            <h3 class="splide__slide__title h3-white-bold ">
-                                                Linux Foundation
-                                            </h3>
-                                        </div>
-                                    </a>
-                                </div>
-                            </div>
-                            <div class="splide__slide col-4 col-sm-3" aria-hidden="false" tabindex="0">
-                                <div class="splide__slide__wrap ">
-                                    <a href="https://www.eclipse.org/" target="_blank">
-                                        <div class="splide__slide__image " style="background-image:url(/images/memberships/Eclipse-Foundation.png);"></div>
-                                        <div class="splide__slide__content">
-                                            <h3 class="splide__slide__title h3-white-bold ">
-                                                Eclipse Foundation
-                                            </h3>
-                                        </div>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+<section class="ds-carousel ds-carousel--logos" data-carousel aria-label="Michelin open source memberships">
+    <button class="ds-carousel__nav ds-carousel__nav--prev" type="button" data-carousel-prev aria-label="Previous memberships" hidden></button>
+    <ul class="ds-carousel__track" data-carousel-track>
+        <li class="ds-carousel__item">
+            <a class="ds-carousel__card" href="https://www.cncf.io/" target="_blank" rel="noopener">
+                <span class="ds-carousel__media" role="img" aria-label="Cloud Native Computing Foundation" style="background-image:url(/images/memberships/CNCF.webp);"></span>
+            </a>
+        </li>
+        <li class="ds-carousel__item">
+            <a class="ds-carousel__card" href="https://www.linuxfoundation.org/" target="_blank" rel="noopener">
+                <span class="ds-carousel__media" role="img" aria-label="Linux Foundation" style="background-image:url(/images/memberships/Linux-Foundation-data.webp);"></span>
+            </a>
+        </li>
+        <li class="ds-carousel__item">
+            <a class="ds-carousel__card" href="https://www.eclipse.org/" target="_blank" rel="noopener">
+                <span class="ds-carousel__media" role="img" aria-label="Eclipse Foundation" style="background-image:url(/images/memberships/Eclipse-Foundation.webp);"></span>
+            </a>
+        </li>
+    </ul>
+    <button class="ds-carousel__nav ds-carousel__nav--next" type="button" data-carousel-next aria-label="Next memberships" hidden></button>
 </section>
 <section id="Projects">
     <div class="columns">
@@ -172,7 +143,7 @@ images: ['images/michelin-oss.jpg']
                         <p style="text-align:center" class="p-white-regular">
                 <span>
                   Explore our latest technological advancements and collaborative efforts driving Michelin's commitment to excellence.<br/>
-                  Discover innovative solutions and security practices on out GitHub repositories, and stay updated on tech trends and developments through our IT blog.<br/>
+                  Discover innovative solutions and security practices on our GitHub repositories, and stay updated on tech trends and developments through our IT blog.<br/>
                 </span>
                         </p>
                     </div>
@@ -181,60 +152,30 @@ images: ['images/michelin-oss.jpg']
         </div>
     </div>
 </section>
-<section class="feature-cards-slider-widget scroll-container " >
-    <div class="container">
-        <div class="feature-cards-widget__wrap row">
-            <div class="splide col splide--slide splide--ltr splide--draggable is-active" style="max-width: 100%; visibility: visible;">
-                <div class="slipe__slider">
-                    <div class="splide__track" id="splide01-track">
-                        <div class="splide__list" id="splide01-list" style="transform: translateX(0px);">
-                            <div class="splide__slide col-4 is-active is-visible" id="splide01-slide01" aria-hidden="false" tabindex="0">
-                                <div class="splide__slide__wrap ">
-                                    <a href="https://github.com/michelin/" target="_blank">
-                                        <div class="splide__slide__image " style="background-image:url(/images/GitHub_Logo_White.png);"></div>
-                                        <div class="splide__slide__content " style="">
-                                            <h3 class="splide__slide__title h3-white-bold ">
-                                                GITHUB
-                                            </h3>
-                                            <p class="splide__slide__text p-white-regular" style="font-style: italic">Dive into our repositories to explore the innovative solutions driving Michelin's commitment to excellence. Join us on this journey of technological advancement and collaboration on GitHub!</p>
-                                            <div class="apos-area"></div>
-                                        </div>
-                                    </a>
-                                </div>
-                            </div>
-                            <div class="splide__slide col-4 is-visible" id="splide01-slide02" aria-hidden="false" tabindex="0">
-                                <div class="splide__slide__wrap ">
-                                    <a href="https://github.com/certmichelin" target="_blank">
-                                        <div class="splide__slide__image " style="background-image:url(/images/michelin_cert_logo.png);"></div>
-                                        <div class="splide__slide__content ">
-                                            <h3 class="splide__slide__title h3-white-bold ">
-                                                CERT's GITHUB
-                                            </h3>
-                                            <p class="splide__slide__text p-white-regular" style="font-style: italic">Explore our security advisories, best practices, and tools designed to fortify defenses against emerging threats. Join us in our mission to safeguard Michelin's digital ecosystem and foster a culture of resilience.</p>
-                                            <div class="apos-area"></div>
-                                        </div>
-                                    </a>
-                                </div>
-                            </div>
-                            <div class="splide__slide col-4 is-visible" id="splide01-slide03" aria-hidden="false" tabindex="0">
-                                <div class="splide__slide__wrap ">
-                                    <a href="https://blogit.michelin.io/" target="_blank">
-                                        <div class="splide__slide__image " style="background-image:url(/images/blog.png);"></div>
-                                        <div class="splide__slide__content">
-                                            <h3 class="splide__slide__title h3-white-bold ">
-                                                IT ENGINEERING BLOG
-                                            </h3>
-                                            <p class="splide__slide__text p-white-regular" style="font-style: italic">From innovative solutions to behind-the-scenes glimpses of our projects, our blog is your go-to resource for staying updated on the latest tech trends and developments. Join us as we explore the intersection of technology and mobility, fueled by creativity and collaboration.
-                                            </p>
-                                            <div class="apos-area"></div>
-                                        </div>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+<section class="ds-carousel" data-carousel aria-label="Projects and news">
+    <button class="ds-carousel__nav ds-carousel__nav--prev" type="button" data-carousel-prev aria-label="Previous projects" hidden></button>
+    <ul class="ds-carousel__track" data-carousel-track>
+        <li class="ds-carousel__item">
+            <a class="ds-carousel__card" href="https://github.com/michelin/" target="_blank" rel="noopener">
+                <span class="ds-carousel__media" aria-hidden="true" style="background-image:url(/images/GitHub_Logo_White.webp);"></span>
+                <h3 class="ds-carousel__title">GITHUB</h3>
+                <p class="ds-carousel__text">Dive into our repositories to explore the innovative solutions driving Michelin's commitment to excellence. Join us on this journey of technological advancement and collaboration on GitHub!</p>
+            </a>
+        </li>
+        <li class="ds-carousel__item">
+            <a class="ds-carousel__card" href="https://github.com/certmichelin" target="_blank" rel="noopener">
+                <span class="ds-carousel__media" aria-hidden="true" style="background-image:url(/images/michelin_cert_logo.webp);"></span>
+                <h3 class="ds-carousel__title">CERT's GITHUB</h3>
+                <p class="ds-carousel__text">Explore our security advisories, best practices, and tools designed to fortify defenses against emerging threats. Join us in our mission to safeguard Michelin's digital ecosystem and foster a culture of resilience.</p>
+            </a>
+        </li>
+        <li class="ds-carousel__item">
+            <a class="ds-carousel__card" href="https://blogit.michelin.io/" target="_blank" rel="noopener">
+                <span class="ds-carousel__media" aria-hidden="true" style="background-image:url(/images/blog.webp);"></span>
+                <h3 class="ds-carousel__title">IT ENGINEERING BLOG</h3>
+                <p class="ds-carousel__text">From innovative solutions to behind-the-scenes glimpses of our projects, our blog is your go-to resource for staying updated on the latest tech trends and developments. Join us as we explore the intersection of technology and mobility, fueled by creativity and collaboration.</p>
+            </a>
+        </li>
+    </ul>
+    <button class="ds-carousel__nav ds-carousel__nav--next" type="button" data-carousel-next aria-label="Next projects" hidden></button>
 </section>

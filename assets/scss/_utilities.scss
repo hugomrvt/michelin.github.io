@@ -1,0 +1,20 @@
+// =============================================================================
+//  Utilities & accessibility
+// =============================================================================
+
+.visually-hidden { @include visually-hidden; }
+
+a,
+button,
+.ds-carousel__card {
+  &:focus-visible { @include focus-ring; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  .ds-carousel__track {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
+}

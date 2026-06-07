@@ -3120,7 +3120,7 @@ section {
 }
 
 body {
-  background-image: url(/images/fond.png);
+  background-image: url(/images/fond.webp);
   background-repeat: repeat;
   background-size: contain;
   background-position-y: 59vw;
@@ -3145,7 +3145,7 @@ h4.activity {
 }
 
 .activities{
-  background-image: url('/images/oss-activities.png');
+  background-image: url('/images/oss-activities.webp');
   background-size: contain;
   background-repeat: no-repeat;
   background-position-x: 49%;
